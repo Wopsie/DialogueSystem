@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!-- Greeting said at start of conversation -->
+<!-- NPC tag is the NPC answer to the player's response, will be printed to the dialogue box -->
+<!-- Response tag is a player option that should be printed to a button -->
 <CharacterCollection>
   <Characters>
     
     <Character name="Jochem">
-      <Name>Jochem</Name>
-      
-      <!-- Greeting said at start of conversation -->
-      <Greeting>Hello, i'm Jochem<!-- Response tag is a player option that should be printed to a button -->
-        <Response>How are you?<!-- NPC tag is the NPC answer to the player's response, will be printed to the dialogue box -->
+    <Name>Jochem</Name>
+      <Greeting>Hello, i'm Jochem
+        <Response>How are you?
           <NPC>I'm alright, little busy</NPC>
-        </Response> 
-        
+        </Response>
+    
         <Response>Bye
         </Response>
       </Greeting>
@@ -20,7 +20,7 @@
     <Character name ="Ian">
       <Name>Ian</Name>
       
-      <Greeting>Hi there<Response>How are you?</Response></Greeting>
+      <Greeting>Hi there<Response>How are you today?</Response> <Response>I got to go</Response> </Greeting>
     
     </Character>
 

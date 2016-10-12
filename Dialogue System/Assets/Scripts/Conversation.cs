@@ -16,6 +16,8 @@ public class Conversation : MonoBehaviour
     private int id;         //number that represents the relevant character script in the xml file character array
 
     private string text;
+
+    private Choice choice = new Choice();
     
 
     void Awake()
@@ -41,7 +43,15 @@ public class Conversation : MonoBehaviour
     //read the <Response> tags from the xml file within the current node and print them to seperate buttons
     void GetChoices()
     {
-        Debug.Log(reader.ReadXml(file, path + "/Greeting", "Response", id));
+        //Debug.Log(reader.ReadXml(file, path + "/Greeting", "Response", id));
+        //reader.ReadSubnodes(file, path + "/Greeting", id);
+        Debug.Log(reader.ReadSubnodes(file, path + "/Greeting", id));
+        //for each response node in current nodes of .xml, add new choice
+
+        for (int i = 0; i < reader.ReadSubnodes(file, path + "/Greeting", id); i++)
+        {
+            Debug.Log("Adding " + i + " Buttons");
+        }
     }
 
     //call this when changes are made to the conversation
