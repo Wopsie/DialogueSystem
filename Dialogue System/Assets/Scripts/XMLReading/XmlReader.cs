@@ -3,7 +3,15 @@ using System.Collections;
 using System.Xml;
 using System;
 
-public class XmlReader{
+public class XmlReader {
+
+    private string[] choiceAttributes;
+    public string[] ChoiceAttributes
+    {
+        get {
+            return choiceAttributes;
+        }
+    }
 
     public string ReadXml(string fileName, string path, string node, int id)
     {
@@ -46,13 +54,17 @@ public class XmlReader{
 
         string[] choiceDescs = new string[subnodes.Count];
 
+        choiceAttributes = new string[subnodes.Count];
+
         for (int i = 0; i < subnodes.Count; i++)
         {
-            //Debug.Log(subnodes[i].FirstChild.Value);
-            Debug.Log(subnodes[i].FirstChild.Value + " " + subnodes[i].SelectSingleNode("@next").Value);
+            //Debug.Log(subnodes[i].FirstChild.Value + " " + subnodes[i].SelectSingleNode("@next").Value);
+
+            choiceAttributes[i] = subnodes[i].SelectSingleNode("@next").Value;
 
             choiceDescs[i] = subnodes[i].FirstChild.Value;
         }
+
         return choiceDescs;
     }
 }

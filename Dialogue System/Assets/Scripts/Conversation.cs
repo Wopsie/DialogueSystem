@@ -1,13 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/*
+ * MAKE POSSIBLE TO END CONVERSATION
+ */
+
+
 public class Conversation : MonoBehaviour
 {
     XmlReader reader = new XmlReader();
 
     private StringUIPrinter namePrinter;
     private StringUIPrinter dialogeuePrinter;
-
     
     private ChoiceButtonHandler choiceButtons;
 
@@ -21,9 +26,6 @@ public class Conversation : MonoBehaviour
     private string initialXmlTag;   //the part of the xml that is first shown to the player upon starting a conversation
 
     private string text;
-
-    private Choice choice = new Choice();
-    
 
     void Awake()
     {
@@ -50,12 +52,12 @@ public class Conversation : MonoBehaviour
     {
         //send array of strings to script to print the contents to GUI buttons
         
-        choiceButtons.GetChoices(reader.ReadSubnodes(file, path + location, id));
+        choiceButtons.GetChoices(reader.ReadSubnodes(file, path + location, id), reader.ChoiceAttributes);
         choiceButtons.PassChoice += ConversationUpdate;
     }
 
     //call this when changes are made to the conversation
-    void ConversationUpdate(int index, string lineTree)
+    void ConversationUpdate(string lineTree)
     {
         choiceButtons.PassChoice -= ConversationUpdate;
         //Debug.Log("NPC Response: " + reader.ReadXml(file, path, lineTree, id));

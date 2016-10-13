@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ChoiceButtonHandler : MonoBehaviour {
 
+    private string[] attributes;    //collection of attributes of the avalible choices. these are required for determining the next step in the conversation
     private string[] playerChoices; //collection of strings that represent the player response options
     private GameObject[] currentButtons; //collection of the buttons that will be put on screen
 
@@ -15,14 +16,15 @@ public class ChoiceButtonHandler : MonoBehaviour {
     private float xPos;
     const float yPosOffset = 40f;
 
-    public delegate void ChoicePasser(int index, string lineTree);
+    public delegate void ChoicePasser(string lineTree);
     public ChoicePasser PassChoice;
 
     [SerializeField]
     private string subTree; // this is the name tag of the next section of the xml that the conversation should go to
 
-    public void GetChoices(string[] receivedChoices)
+    public void GetChoices(string[] receivedChoices, string[] choiceAttributes)
     {
+        attributes = choiceAttributes;
         //playerChoices = null;
         playerChoices = receivedChoices;
         
@@ -36,10 +38,12 @@ public class ChoiceButtonHandler : MonoBehaviour {
         int i = 0;
         float offsetCounter = 0;
 
+
+        Debug.Log(attributes.Length + " " + playerChoices.Length);
+
         //for each string in response options array for the player
         foreach (string s in playerChoices)
         {
-            Debug.Log("Creating choice buttons");
             //instantiate new UI button
             GameObject choiceButtonObj = (GameObject)Instantiate(choiceButtonPrefab, Vector3.zero, Quaternion.identity);
 
@@ -59,7 +63,12 @@ public class ChoiceButtonHandler : MonoBehaviour {
             //set button position
             choiceButton.GetComponent<RectTransform>().anchoredPosition = pos;
             //use lambda to detect what button was clicked
-            choiceButton.onClick.AddListener(() => clickAction(choiceButton, i));
+
+            Debug.Log(attributes[i]);
+
+            string att = attributes[i];
+
+            choiceButton.onClick.AddListener(() => clickAction(att));
 
             offsetCounter -= yPosOffset;
 
@@ -69,10 +78,10 @@ public class ChoiceButtonHandler : MonoBehaviour {
         }
     }
 
-    void clickAction(Button clickedButton, int index)
+    void clickAction(string attribute)
     {
         //button clicked
-
+        Debug.Log(attribute);
         //destroy current buttons
         for (int i = 0; i < currentButtons.Length; i++)
         {
@@ -87,7 +96,7 @@ public class ChoiceButtonHandler : MonoBehaviour {
 
         if (PassChoice != null)
         {
-            PassChoice(index, subTree + 0);
+            PassChoice(subTree + attribute);
         }
     }
 }
