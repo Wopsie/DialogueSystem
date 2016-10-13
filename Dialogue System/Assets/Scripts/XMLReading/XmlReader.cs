@@ -18,10 +18,8 @@ public class XmlReader{
         xmlDoc.LoadXml(xml);
 
         //start parsing xml
-        string charactersxPath = path;
-        XmlNodeList nodes = xmlDoc.SelectNodes(charactersxPath);
-
-        //ReadSubnodes(fileName, path, node, id);
+        
+        XmlNodeList nodes = xmlDoc.SelectNodes(path);
 
         return nodes[id].SelectSingleNode(node).FirstChild.Value;
 
@@ -31,7 +29,7 @@ public class XmlReader{
         */
     }
 
-    public int ReadSubnodes(string fileName, string path, int id)
+    public string[] ReadSubnodes(string fileName, string path, string node, int id)
     {
         var textFile = Resources.Load(fileName) as TextAsset;
 
@@ -42,13 +40,15 @@ public class XmlReader{
 
         //start parsing xml
         XmlNodeList nodes = xmlDoc.SelectNodes(path);
-        XmlNodeList subnodes = nodes[id].SelectNodes("Response");
+        XmlNodeList subnodes = nodes[id].SelectNodes("Response");//find any subnodes with the response tag
+
+        string[] choiceDescs = new string[subnodes.Count];
 
         for (int i = 0; i < subnodes.Count; i++)
         {
-            Debug.Log(subnodes[i].FirstChild.Value);
+            choiceDescs[i] = subnodes[i].FirstChild.Value;
         }
 
-        return subnodes.Count;
+        return choiceDescs;
     }
 }

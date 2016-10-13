@@ -8,6 +8,9 @@ public class Conversation : MonoBehaviour
     private StringUIPrinter namePrinter;
     private StringUIPrinter dialogeuePrinter;
 
+    
+    private ChoiceButtonHandler choiceButtons;
+
     [SerializeField]
     private string file;    //xml file name
     [SerializeField]
@@ -22,6 +25,7 @@ public class Conversation : MonoBehaviour
 
     void Awake()
     {
+        choiceButtons = GameObject.FindWithTag("Canvas").GetComponent<ChoiceButtonHandler>();
         namePrinter = GameObject.FindWithTag("NameText").GetComponent<StringUIPrinter>();
         dialogeuePrinter = GameObject.FindWithTag("DialogueText").GetComponent<StringUIPrinter>();
     }
@@ -43,21 +47,20 @@ public class Conversation : MonoBehaviour
     //read the <Response> tags from the xml file within the current node and print them to seperate buttons
     void GetChoices()
     {
-        //Debug.Log(reader.ReadXml(file, path + "/Greeting", "Response", id));
-        //reader.ReadSubnodes(file, path + "/Greeting", id);
-        Debug.Log(reader.ReadSubnodes(file, path + "/Greeting", id));
-        //for each response node in current nodes of .xml, add new choice
+        //send array of strings to script to print the contents to GUI buttons
+        //choice.AddChoices(reader.ReadSubnodes(file, path + "/Greeting", id));
+        choiceButtons.GetChoices(reader.ReadSubnodes(file, path + "/Greeting", "Response", id));
 
-        for (int i = 0; i < reader.ReadSubnodes(file, path + "/Greeting", id); i++)
-        {
-            Debug.Log("Adding " + i + " Buttons");
-        }
+        choiceButtons.PassChoice += ConversationUpdate;
     }
 
     //call this when changes are made to the conversation
-    public void ConversationUpdate()
+    void ConversationUpdate(int index)
     {
+        choiceButtons.PassChoice -= ConversationUpdate;
+        Debug.Log("NPC Response: " + reader.ReadXml(file, path, "Greeting", id));
 
+        
     }
 
     //call this when the player ends the conversation with the NPC

@@ -2,16 +2,17 @@
 using System.Collections;
 
 //this class represents a choice that the player can make in the conversation
-public class Choice  {
+public class Choice {
 
-    public void AddChoice()
+    public void AddChoices(string[] choices)
     {
         //create a choice depending on received
+        Debug.Log(choices);
 
-        //create button (must be done in an update somewhere
-        if (GUI.Button(new Rect(10, 10, 100, 90), "player option"))
+        foreach(string s in choices)
         {
-            Debug.Log("Chose an option");
+            //tell gui script to make a button with the text on it
+            Debug.Log("a string was found");
         }
     }
 
@@ -19,13 +20,4 @@ public class Choice  {
     {
         //delete a choice (when the choice is no longer relevant)
     }
-
-    //with monobehavior this will act like an update
-    void OnGUI()
-    {
-        
-        
-        
-    }
-
 }

@@ -9,7 +9,16 @@
     <Name>Jochem</Name>
       <Greeting>Hello, i'm Jochem
         <Response>How are you?
-          <NPC>I'm alright, little busy</NPC>
+          <NPC>I'm alright, little busy
+            <Response>Turn purple</Response>
+            <Response>Okay, I'll leave you be</Response>
+          </NPC>
+        </Response>
+        
+        <Response>What are you doing? 
+          <NPC>Making a thing
+            <Response>Okay bye</Response>
+          </NPC>
         </Response>
     
         <Response>Bye
