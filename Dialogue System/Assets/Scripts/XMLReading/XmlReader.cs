@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Xml;
+using System;
 
 public class XmlReader{
 
@@ -29,7 +30,7 @@ public class XmlReader{
         */
     }
 
-    public string[] ReadSubnodes(string fileName, string path, string node, int id)
+    public string[] ReadSubnodes(string fileName, string path, int id)
     {
         var textFile = Resources.Load(fileName) as TextAsset;
 
@@ -40,15 +41,18 @@ public class XmlReader{
 
         //start parsing xml
         XmlNodeList nodes = xmlDoc.SelectNodes(path);
+        
         XmlNodeList subnodes = nodes[id].SelectNodes("Response");//find any subnodes with the response tag
 
         string[] choiceDescs = new string[subnodes.Count];
 
         for (int i = 0; i < subnodes.Count; i++)
         {
+            //Debug.Log(subnodes[i].FirstChild.Value);
+            Debug.Log(subnodes[i].FirstChild.Value + " " + subnodes[i].SelectSingleNode("@next").Value);
+
             choiceDescs[i] = subnodes[i].FirstChild.Value;
         }
-
         return choiceDescs;
     }
 }

@@ -17,6 +17,8 @@ public class Conversation : MonoBehaviour
     private string path;    //path through xml file
     [SerializeField]
     private int id;         //number that represents the relevant character script in the xml file character array
+    [SerializeField]
+    private string initialXmlTag;   //the part of the xml that is first shown to the player upon starting a conversation
 
     private string text;
 
@@ -36,31 +38,32 @@ public class Conversation : MonoBehaviour
 
         text = reader.ReadXml(file, path, "Name" , id);
         namePrinter.PrintToUI(text);
-        text = reader.ReadXml(file, path, "Greeting", id);
+        text = reader.ReadXml(file, path, initialXmlTag, id);
         dialogeuePrinter.PrintToUI(text);
 
         //present UI button choices loaded from xml.    These buttons call the ConversationUpdate method and add a parameter
-        GetChoices();
-
+        GetChoices("/" + initialXmlTag);
     }
 
     //read the <Response> tags from the xml file within the current node and print them to seperate buttons
-    void GetChoices()
+    void GetChoices(string location)
     {
         //send array of strings to script to print the contents to GUI buttons
-        //choice.AddChoices(reader.ReadSubnodes(file, path + "/Greeting", id));
-        choiceButtons.GetChoices(reader.ReadSubnodes(file, path + "/Greeting", "Response", id));
-
+        
+        choiceButtons.GetChoices(reader.ReadSubnodes(file, path + location, id));
         choiceButtons.PassChoice += ConversationUpdate;
     }
 
     //call this when changes are made to the conversation
-    void ConversationUpdate(int index)
+    void ConversationUpdate(int index, string lineTree)
     {
         choiceButtons.PassChoice -= ConversationUpdate;
-        Debug.Log("NPC Response: " + reader.ReadXml(file, path, "Greeting", id));
+        //Debug.Log("NPC Response: " + reader.ReadXml(file, path, lineTree, id));
 
-        
+        text = reader.ReadXml(file, path, lineTree, id);
+        dialogeuePrinter.PrintToUI(text);
+
+        GetChoices("/" + lineTree);
     }
 
     //call this when the player ends the conversation with the NPC
@@ -68,5 +71,4 @@ public class Conversation : MonoBehaviour
     {
 
     }
-
 }
