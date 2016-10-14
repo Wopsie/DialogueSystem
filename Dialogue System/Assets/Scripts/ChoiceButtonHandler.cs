@@ -39,7 +39,7 @@ public class ChoiceButtonHandler : MonoBehaviour {
         float offsetCounter = 0;
 
 
-        Debug.Log(attributes.Length + " " + playerChoices.Length);
+        //Debug.Log(attributes.Length + " " + playerChoices.Length);
 
         //for each string in response options array for the player
         foreach (string s in playerChoices)
@@ -64,7 +64,7 @@ public class ChoiceButtonHandler : MonoBehaviour {
             choiceButton.GetComponent<RectTransform>().anchoredPosition = pos;
             //use lambda to detect what button was clicked
 
-            Debug.Log(attributes[i]);
+            //Debug.Log(attributes[i]);
 
             string att = attributes[i];
 
@@ -81,7 +81,7 @@ public class ChoiceButtonHandler : MonoBehaviour {
     void clickAction(string attribute)
     {
         //button clicked
-        Debug.Log(attribute);
+        //Debug.Log(attribute);
         //destroy current buttons
         for (int i = 0; i < currentButtons.Length; i++)
         {

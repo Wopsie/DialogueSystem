@@ -31,11 +31,6 @@ public class XmlReader {
         XmlNodeList nodes = xmlDoc.SelectNodes(path);
 
         return nodes[id].SelectSingleNode(node).FirstChild.Value;
-
-        /*
-        string charNameAtribute = nodes[i].SelectSingleNode("@name").Value;
-        string charName = nodes[i].SelectSingleNode("Name").FirstChild.Value;
-        */
     }
 
     public string[] ReadSubnodes(string fileName, string path, int id)

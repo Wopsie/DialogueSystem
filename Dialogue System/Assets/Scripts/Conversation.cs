@@ -16,6 +16,11 @@ public class Conversation : MonoBehaviour
     
     private ChoiceButtonHandler choiceButtons;
 
+    public delegate void LockConvo(bool talks);
+    public LockConvo ConvoLocker;
+
+    private bool isTalking;
+
     [SerializeField]
     private string file;    //xml file name
     [SerializeField]
@@ -36,7 +41,15 @@ public class Conversation : MonoBehaviour
 
     public void ConversationStart()
     {
+        Debug.Log("Start Talking " + gameObject.name);
+
+        isTalking = true;
         //send out delegate to disable certain features like movement etc.
+        if (ConvoLocker != null)
+        {
+            ConvoLocker(isTalking);
+        }
+
 
         text = reader.ReadXml(file, path, "Name" , id);
         namePrinter.PrintToUI(text);
@@ -62,15 +75,41 @@ public class Conversation : MonoBehaviour
         choiceButtons.PassChoice -= ConversationUpdate;
         //Debug.Log("NPC Response: " + reader.ReadXml(file, path, lineTree, id));
 
-        text = reader.ReadXml(file, path, lineTree, id);
-        dialogeuePrinter.PrintToUI(text);
+        
 
-        GetChoices("/" + lineTree);
+        //if attribute is bigger than number of avalible linetree, end conversation
+
+        Debug.Log(lineTree);
+
+        if (lineTree == "Tree200")
+        {
+            Debug.Log("Gotta stop talking");
+            EndConversation();
+        }
+        else
+        {
+
+            text = reader.ReadXml(file, path, lineTree, id);
+            dialogeuePrinter.PrintToUI(text);
+
+            Debug.Log("Gotta get choices");
+            GetChoices("/" + lineTree);
+        }
+        
     }
 
     //call this when the player ends the conversation with the NPC
     void EndConversation()
     {
+        //Debug.Log("Gotta end conversation");
+        namePrinter.PrintToUI(" ");
+        dialogeuePrinter.PrintToUI(" ");
 
+        isTalking = false;
+
+        if(ConvoLocker != null)
+        {
+            ConvoLocker(isTalking);
+        }
     }
 }
