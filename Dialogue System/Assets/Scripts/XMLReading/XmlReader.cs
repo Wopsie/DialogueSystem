@@ -8,9 +8,7 @@ public class XmlReader {
     private string[] choiceAttributes;
     public string[] ChoiceAttributes
     {
-        get {
-            return choiceAttributes;
-        }
+        get {return choiceAttributes;}
     }
 
     public string ReadXml(string fileName, string path, string node, int id)
@@ -19,31 +17,15 @@ public class XmlReader {
         WHEN LOADING FROM RESOURCES, DO NOT INCLUDE FILE EXTENSION IN NAME
         */
 
-        var textFile = Resources.Load(fileName) as TextAsset;
-        
-        //load xml into memory
-        XmlDocument xmlDoc = new XmlDocument();
-        string xml = textFile.text;
-        xmlDoc.LoadXml(xml);
-
-        //start parsing xml
-        
-        XmlNodeList nodes = xmlDoc.SelectNodes(path);
+        XmlNodeList nodes = PrepareXML(fileName, path);
 
         return nodes[id].SelectSingleNode(node).FirstChild.Value;
     }
 
     public string[] ReadSubnodes(string fileName, string path, int id)
     {
-        var textFile = Resources.Load(fileName) as TextAsset;
 
-        //load xml into memory
-        XmlDocument xmlDoc = new XmlDocument();
-        string xml = textFile.text;
-        xmlDoc.LoadXml(xml);
-
-        //start parsing xml
-        XmlNodeList nodes = xmlDoc.SelectNodes(path);
+        XmlNodeList nodes = PrepareXML(fileName, path);
         
         XmlNodeList subnodes = nodes[id].SelectNodes("Response");//find any subnodes with the response tag
 
@@ -61,5 +43,22 @@ public class XmlReader {
         }
 
         return choiceDescs;
+    }
+
+
+    XmlNodeList PrepareXML(string fileName, string path)
+    {
+        var textFile = Resources.Load(fileName) as TextAsset;
+
+        //load xml into memory
+        XmlDocument xmlDoc = new XmlDocument();
+        string xml = textFile.text;
+        xmlDoc.LoadXml(xml);
+
+        //start parsing xml
+
+        XmlNodeList nodes = xmlDoc.SelectNodes(path);
+
+        return nodes;
     }
 }

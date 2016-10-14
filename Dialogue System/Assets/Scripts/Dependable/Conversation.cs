@@ -1,12 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-/*
- * MAKE POSSIBLE TO END CONVERSATION
- */
-
-
 public class Conversation : MonoBehaviour
 {
     XmlReader reader = new XmlReader();
@@ -34,9 +28,9 @@ public class Conversation : MonoBehaviour
 
     void Awake()
     {
-        choiceButtons = GameObject.FindWithTag("Canvas").GetComponent<ChoiceButtonHandler>();
-        namePrinter = GameObject.FindWithTag("NameText").GetComponent<StringUIPrinter>();
-        dialogeuePrinter = GameObject.FindWithTag("DialogueText").GetComponent<StringUIPrinter>();
+        choiceButtons = GameObject.FindWithTag(Tags.canvasTag).GetComponent<ChoiceButtonHandler>();
+        namePrinter = GameObject.FindWithTag(Tags.nameText).GetComponent<StringUIPrinter>();
+        dialogeuePrinter = GameObject.FindWithTag(Tags.dialogueText).GetComponent<StringUIPrinter>();
     }
 
     public void ConversationStart()
@@ -47,7 +41,6 @@ public class Conversation : MonoBehaviour
         {
             ConvoLocker(isTalking);
         }
-
 
         text = reader.ReadXml(file, path, "Name" , id);
         namePrinter.PrintToUI(text);
@@ -76,16 +69,15 @@ public class Conversation : MonoBehaviour
         //if the attribute from the response is "Quit" end conversation
         if (lineTree == "TreeQuit")
         {
-            Debug.Log("Gotta stop talking");
             EndConversation();
         }
-        else
+        else // conversation is not over
         {
-
+            //print relevant data to screen depending on player's latest choice
             text = reader.ReadXml(file, path, lineTree, id);
             dialogeuePrinter.PrintToUI(text);
 
-            Debug.Log("Gotta get choices");
+            //get new player choices depending on the player's latest choice
             GetChoices("/" + lineTree);
         }
         
@@ -95,11 +87,12 @@ public class Conversation : MonoBehaviour
     void EndConversation()
     {
         //Debug.Log("Gotta end conversation");
-        namePrinter.PrintToUI(" ");
-        dialogeuePrinter.PrintToUI(" ");
+        namePrinter.PrintToUI("");
+        dialogeuePrinter.PrintToUI("");
 
         isTalking = false;
 
+        //fire delegate to tell scripts to unlock things like player movement (in this case the ability to start conversations with other NPCs)
         if(ConvoLocker != null)
         {
             ConvoLocker(isTalking);

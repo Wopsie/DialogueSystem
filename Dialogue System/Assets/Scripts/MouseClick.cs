@@ -8,18 +8,18 @@ public class MouseClick : MonoBehaviour {
 
 	void Update()
     {
+        //if clicked & clicks are not disabled (not talking with NPC)
         if(Input.GetMouseButtonDown(0) && disableClicks == false)
         {
-            
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
+            //fire raycast to see what the mouse clicked on
             if(Physics.Raycast(ray, out hit))
             {
                 if (hit.collider != null)
                 {
-                    Debug.Log(hit.collider.gameObject.name);
-
+                    //not dependant on tags
                     if(hit.collider.gameObject.GetComponent<Conversation>() != null)
                     {
                         conversation = hit.collider.gameObject.GetComponent<Conversation>();
@@ -29,12 +29,12 @@ public class MouseClick : MonoBehaviour {
 
                         conversation.ConversationStart();
                     } 
-                }
-                    
+                }     
             }
         }
     }
 
+    //toggle the ability to click on NPC's to start a conversation
     void AllowClicks(bool blockClicks)
     {
         disableClicks = blockClicks;

@@ -25,9 +25,7 @@ public class ChoiceButtonHandler : MonoBehaviour {
     public void GetChoices(string[] receivedChoices, string[] choiceAttributes)
     {
         attributes = choiceAttributes;
-        //playerChoices = null;
         playerChoices = receivedChoices;
-        
         CreateChoiceButtons();
     }
 
@@ -37,9 +35,6 @@ public class ChoiceButtonHandler : MonoBehaviour {
 
         int i = 0;
         float offsetCounter = 0;
-
-
-        //Debug.Log(attributes.Length + " " + playerChoices.Length);
 
         //for each string in response options array for the player
         foreach (string s in playerChoices)
@@ -62,12 +57,9 @@ public class ChoiceButtonHandler : MonoBehaviour {
 
             //set button position
             choiceButton.GetComponent<RectTransform>().anchoredPosition = pos;
-            //use lambda to detect what button was clicked
-
-            //Debug.Log(attributes[i]);
-
+            
             string att = attributes[i];
-
+            //use lambda to detect what response was picked & what attribute it had
             choiceButton.onClick.AddListener(() => clickAction(att));
 
             offsetCounter -= yPosOffset;
@@ -81,7 +73,7 @@ public class ChoiceButtonHandler : MonoBehaviour {
     void clickAction(string attribute)
     {
         //button clicked
-        //Debug.Log(attribute);
+
         //destroy current buttons
         for (int i = 0; i < currentButtons.Length; i++)
         {
@@ -93,7 +85,6 @@ public class ChoiceButtonHandler : MonoBehaviour {
 
         //tell the conversation update where the conversation is progressing
         //specify the next step in the path of the conversation
-
         if (PassChoice != null)
         {
             PassChoice(subTree + attribute);
