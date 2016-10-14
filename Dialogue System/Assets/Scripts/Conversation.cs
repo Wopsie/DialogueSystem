@@ -41,8 +41,6 @@ public class Conversation : MonoBehaviour
 
     public void ConversationStart()
     {
-        Debug.Log("Start Talking " + gameObject.name);
-
         isTalking = true;
         //send out delegate to disable certain features like movement etc.
         if (ConvoLocker != null)
@@ -65,6 +63,7 @@ public class Conversation : MonoBehaviour
     {
         //send array of strings to script to print the contents to GUI buttons
         
+        //pass response strings and response attributes to button handler
         choiceButtons.GetChoices(reader.ReadSubnodes(file, path + location, id), reader.ChoiceAttributes);
         choiceButtons.PassChoice += ConversationUpdate;
     }
@@ -73,15 +72,9 @@ public class Conversation : MonoBehaviour
     void ConversationUpdate(string lineTree)
     {
         choiceButtons.PassChoice -= ConversationUpdate;
-        //Debug.Log("NPC Response: " + reader.ReadXml(file, path, lineTree, id));
 
-        
-
-        //if attribute is bigger than number of avalible linetree, end conversation
-
-        Debug.Log(lineTree);
-
-        if (lineTree == "Tree200")
+        //if the attribute from the response is "Quit" end conversation
+        if (lineTree == "TreeQuit")
         {
             Debug.Log("Gotta stop talking");
             EndConversation();
